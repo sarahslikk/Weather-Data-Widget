@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2024-07-05 22:36:46">
+<sp_widget action="INSERT_OR_UPDATE">
+<category>custom</category>
+<client_script><![CDATA[api.controller = function($scope) {
+	var c = this;
+	$scope.searchWeather = function(city) {
+		c.data.city = city;
+		c.data.error = null;
+		c.server.update();
+	}
+
+	$scope.mphToKph = function(value, unit) {
+		if (unit == 'Mph') {
+			c.data.weatherData.wind.value = (value * 1.60934).toFixed(2);
+			c.data.weatherData.wind.unit = 'Kph';
+		}
+	}
+	$scope.kphToMph = function(value, unit) {
+		if (unit == 'Kph') {
+			c.data.weatherData.wind.value = (value / 1.60934).toFixed(2);
+			c.data.weatherData.wind.unit = 'Mph';
+		}
+	}
+
+	$scope.fahToCel = function(value, unit) {
+		if (unit == '°F') {
+			c.data.weatherData.temp.value = ((value - 32) * 5/9).toFixed(2);
+			c.data.weatherData.temp.unit = '°C';
+		}
+	}
+	$scope.celToFah = function(value, unit) {
+		if (unit == '°C') {
+			c.data.weatherData.temp.value = ((value * 9/5) + 32).toFixed(2);
+			c.data.weatherData.temp.unit = '°F';
+		}
+	}
+};
+]]></client_script>
+<controller_as>c</controller_as>
+<css>* {
+  text-align: center;
+  padding:5px;
+}
+.container {
+  margin: 10px 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  background: linear-gradient(135deg, #cfe5e5, #b0e2db);
+}
+.error-message {
+  color: red;
+}
+.conversion {
+   background: #ffd700;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    border: none;
+    color: #000;
+}
+
+
+</css>
+<data_table>sp_instance</data_table>
+<demo_data/>
+<description/>
+<docs display_value=""/>
+<field_list/>
+<has_preview>true</has_preview>
+<id>weather_data</id>
+<internal>false</internal>
+<link><![CDATA[function link(scope, element, attrs, controller) {  }]]></link>
+<name>Weather Data</name>
+<option_schema/>
+<public>true</public>
+<roles/>
+<script><![CDATA[(function() {
+	/*Server gets city from input obj passed from client script
+	Then server executes REST message
+	Server puts response body into data obj and is passed back to client
+	Then that stuff is shown through angular
+	Temp, humidity, city, wind
+	Separate functions for conversion of temp and wind are in client, to avoid unnecessary server calls
+	Images for the weather are from image table in server with same names as one of the items in the weather object
+	Passed to client to display with angular directives.
+	Edge cases are captured for incorrect place names and to avoid having unnecessary elements pop up 
+	*/
+	if (input) {
+		//avoid the hard code by creating a request message, dynamically add the city parameter
+	//data.endpoint = data.url + encodeURIComponent(input.city) + data.api;
+		var request = new sn_ws.RESTMessageV2('Weather Data', 'Get Weather');
+		//request.setEndpoint(data.endpoint);
+	//	request.setHttpMethod('GET');
+		request.setStringParameter('input', encodeURIComponent(input.city));
+		var response;
+		try {
+			response = request.execute();
+		} catch (ex) {
+			console.log('Error executing REST request: ' + ex.message);
+		}
+
+		var responseBody = response.getBody();
+		var httpStatus = response.getStatusCode();
+
+		if (httpStatus == 200) {
+			var weather = JSON.parse(responseBody);
+			console.log(weather)
+			data.weatherData = {
+				name: weather.name,
+				image: weather.weather[0].main.toLowerCase(),
+				temp: {value:weather.main.temp, unit:'°C'},
+				humidity: weather.main.humidity,
+				wind: {value:weather.wind.speed, unit:'Kph'},
+			};
+
+		} else {
+			console.log('Error fetching weather data: ' + httpStatus + ' - ' + responseBody);
+			data.error = 'Incorrect place name, please reenter!';
+			data.weatherData = null;
+
+		}
+	}
+	
+
+
+})();
+]]></script>
+<servicenow>false</servicenow>
+<sys_class_name>sp_widget</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2024-07-04 04:30:57</sys_created_on>
+<sys_id>35b84d33c38bca10d187b53ed4013156</sys_id>
+<sys_mod_count>22</sys_mod_count>
+<sys_name>Weather Data</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sp_widget_35b84d33c38bca10d187b53ed4013156</sys_update_name>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2024-07-05 22:36:19</sys_updated_on>
+<template><![CDATA[<div class="container">
+  <h1>Weather Information</h1>
+  <label for="city">Search for weather information:</label>
+  <input type="text" id="city" ng-model="c.data.city" placeholder="Enter a city or place!">
+<button class="btn btn-success" name="searchButton" ng-click="searchWeather(c.data.city)">
+  Search
+</button>
+ <div id="error" ng-if="c.data.error" class="error-message">
+      <p>{{c.data.error}}</p>
+  </div>
+  <div ng-if="c.data.weatherData">
+    <h2>{{c.data.weatherData.name}}</h2>
+            <img ng-src="{{c.data.weatherData.image}}.png" width="150" height="150" alt="{{c.data.weatherData.image}}">
+      <p class="temp">Temperature: {{c.data.weatherData.temp.value}} {{c.data.weatherData.temp.unit}}</p>
+    <button class="conversion" name="fahtocel" ng-click="fahToCel(c.data.weatherData.temp.value, c.data.weatherData.temp.unit)">
+      °C
+    </button>
+     <button class="conversion" name="celtofah" ng-click="celToFah(c.data.weatherData.temp.value, c.data.weatherData.temp.unit)">
+       °F
+    </button>   
+      <p>Humidity: {{c.data.weatherData.humidity}} %</p>
+    <p>
+      Wind: {{c.data.weatherData.wind.value}} {{c.data.weatherData.wind.unit}} </p>
+    <button class="conversion" name="mphtokph" ng-click="mphToKph(c.data.weatherData.wind.value, c.data.weatherData.wind.unit)">
+      Kph
+    </button>
+    <button class="conversion" name="kphtomph" ng-click="kphToMph(c.data.weatherData.wind.value, c.data.weatherData.wind.unit)">
+      Mph
+    </button>
+  </div>
+ 
+</div>
+]]></template>
+</sp_widget>
+</unload>
