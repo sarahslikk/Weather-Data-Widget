@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<unload unload_date="2024-07-05 22:46:23">
+<sys_rest_message action="INSERT_OR_UPDATE">
+<access>package_private</access>
+<authentication_type>no_authentication</authentication_type>
+<basic_auth_password/>
+<basic_auth_profile display_value=""/>
+<basic_auth_user/>
+<description/>
+<name>Weather Data</name>
+<oauth2_profile display_value=""/>
+<protocol_name display_value=""/>
+<rest_endpoint>https://api.openweathermap.org/data/2.5/weather?units=metric&amp;q=${input}&amp;appid=caaea630486efc7bdd463739e8f5546c</rest_endpoint>
+<sys_class_name>sys_rest_message</sys_class_name>
+<sys_created_by>admin</sys_created_by>
+<sys_created_on>2024-07-04 04:34:18</sys_created_on>
+<sys_id>975909f3c38bca10d187b53ed40131c2</sys_id>
+<sys_mod_count>4</sys_mod_count>
+<sys_name>Weather Data</sys_name>
+<sys_package display_value="Global" source="global">global</sys_package>
+<sys_policy/>
+<sys_scope display_value="Global">global</sys_scope>
+<sys_update_name>sys_rest_message_975909f3c38bca10d187b53ed40131c2</sys_update_name>
+<sys_updated_by>admin</sys_updated_by>
+<sys_updated_on>2024-07-04 04:57:57</sys_updated_on>
+<use_basic_auth>false</use_basic_auth>
+<use_mutual_auth>false</use_mutual_auth>
+</sys_rest_message>
+</unload>
