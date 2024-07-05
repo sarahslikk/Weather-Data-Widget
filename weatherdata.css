@@ -1,0 +1,21 @@
+* {
+  text-align: center;
+  padding:5px;
+}
+.container {
+  margin: 10px 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  background: linear-gradient(135deg, #cfe5e5, #b0e2db);
+}
+.error-message {
+  color: red;
+}
+.conversion {
+   background: #ffd700;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    border: none;
+    color: #000;
+}

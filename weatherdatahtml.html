@@ -1,0 +1,32 @@
+<div class="container">
+  <h1>Weather Information</h1>
+  <label for="city">Search for weather information:</label>
+  <input type="text" id="city" ng-model="c.data.city" placeholder="Enter a city or place!">
+<button class="btn btn-success" name="searchButton" ng-click="searchWeather(c.data.city)">
+  Search
+</button>
+ <div id="error" ng-if="c.data.error" class="error-message">
+      <p>{{c.data.error}}</p>
+  </div>
+  <div ng-if="c.data.weatherData">
+    <h2>{{c.data.weatherData.name}}</h2>
+            <img ng-src="{{c.data.weatherData.image}}.png" width="150" height="150" alt="{{c.data.weatherData.image}}">
+      <p class="temp">Temperature: {{c.data.weatherData.temp.value}} {{c.data.weatherData.temp.unit}}</p>
+    <button class="conversion" name="fahtocel" ng-click="fahToCel(c.data.weatherData.temp.value, c.data.weatherData.temp.unit)">
+      °C
+    </button>
+     <button class="conversion" name="celtofah" ng-click="celToFah(c.data.weatherData.temp.value, c.data.weatherData.temp.unit)">
+       °F
+    </button>   
+      <p>Humidity: {{c.data.weatherData.humidity}} %</p>
+    <p>
+      Wind: {{c.data.weatherData.wind.value}} {{c.data.weatherData.wind.unit}} </p>
+    <button class="conversion" name="mphtokph" ng-click="mphToKph(c.data.weatherData.wind.value, c.data.weatherData.wind.unit)">
+      Kph
+    </button>
+    <button class="conversion" name="kphtomph" ng-click="kphToMph(c.data.weatherData.wind.value, c.data.weatherData.wind.unit)">
+      Mph
+    </button>
+  </div>
+ 
+</div>
