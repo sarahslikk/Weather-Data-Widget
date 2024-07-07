@@ -10,7 +10,7 @@
 <name>Weather Data</name>
 <oauth2_profile display_value=""/>
 <protocol_name display_value=""/>
-<rest_endpoint>https://api.openweathermap.org/data/2.5/weather?units=metric&amp;q=${input}&amp;appid=caaea630486efc7bdd463739e8f5546c</rest_endpoint>
+<rest_endpoint>https://api.openweathermap.org/data/2.5/weather?units=metric&amp;q=${input}&amp;appid={PERSONAL_API_KEY}</rest_endpoint>
 <sys_class_name>sys_rest_message</sys_class_name>
 <sys_created_by>admin</sys_created_by>
 <sys_created_on>2024-07-04 04:34:18</sys_created_on>
