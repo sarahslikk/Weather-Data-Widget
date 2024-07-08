@@ -10,7 +10,7 @@ I created a REST Message global record to avoid hardcoding. In the REST message 
 
 Weather Data widget available in Service Portal in Servicenow
 
-Upload the XML files to your instance to replicate this widget (it is a global widget) and replace the API key, or view the individual files for the HTML/AngularJS, Javascript, and CSS.
+Upload the XML files to your instance to replicate this widget (it is a global widget). Upload the weather data xml into the Service Portal widget table, upload the REST message xml into the REST messages table and replace the API key, or view the individual files for the HTML/AngularJS, Javascript, and CSS.
 
 To have the images work, upload the images xml file into the db_image table (db_image.list).
 
