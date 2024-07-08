@@ -12,3 +12,5 @@ Weather Data widget available in Service Portal in Servicenow
 
 Upload the XML files to your instance to replicate this widget (it is a global widget) and replace the API key, or view the individual files for the HTML/AngularJS, Javascript, and CSS.
 
+To have the images work, upload the images xml file into the db_image table (db_image.list).
+
